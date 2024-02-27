@@ -1,7 +1,7 @@
 import { createServer } from "http";
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import { afterAll, beforeAll, test } from "vitest";
-const app = require("../app");
+import app from "../app";
 
 app.set(`port`, 3000);
 
@@ -15,8 +15,9 @@ afterAll(() => {
   server.close();
 });
 
+// eslint-disable-next-line @typescript-eslint/no-shadow
 test(`index`, async ({ expect }) => {
-  const response = await fetch("http://localhost:3000");
+  const response = await fetch(`http://localhost:3000`);
   const text = await response.text();
   expect(text).toMatchInlineSnapshot(`
     "<html>
