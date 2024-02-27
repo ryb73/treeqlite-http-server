@@ -5,6 +5,7 @@ module.exports = {
   extends: [`plugin:deprecation/recommended`, `@ryb73`],
 
   rules: {
+    "sonar/new-cap": `off`,
     "testing-library/no-debugging-utils": `off`,
   },
 };
