@@ -19,20 +19,8 @@ afterAll(() => {
 test(`index`, async ({ expect }) => {
   const response = await fetch(`http://localhost:3000`);
   const text = await response.text();
-  expect(text).toMatchInlineSnapshot(`
-    "<html>
-
-    <head>
-      <title>Express</title>
-      <link rel="stylesheet" href="/stylesheets/style.css">
-    </head>
-
-    <body>
-      <h1>Express</h1>
-      <p>Welcome to Express</p>
-    </body>
-
-    </html>
-    "
-  `);
+  expect(text).toMatchInlineSnapshot(`"Hello World!"`);
+  expect(response.headers.get(`content-type`)).toMatchInlineSnapshot(
+    `"text/plain; charset=utf-8"`
+  );
 });
