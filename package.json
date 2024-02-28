@@ -20,6 +20,10 @@
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.11.0",
     "@ryb73/eslint-config": "^13.0.2",
+    "@ryb73/super-duper-parakeet": "^12.1.0",
+    "@types/cookie-parser": "^1.4.6",
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^20.11.20",
     "@typescript-eslint/utils": "^7.1.0",
     "eslint": "^8.57.0",
