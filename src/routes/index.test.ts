@@ -1,7 +1,6 @@
 import { createServer } from "http";
 import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
 import { defined } from "@ryb73/super-duper-parakeet/lib/src/type-checks.js";
-// eslint-disable-next-line @typescript-eslint/no-shadow
 import { afterAll, assert, beforeAll, describe, test } from "vitest";
 import app from "../app.js";
 import { type RequestBody, ResponseBody } from "./index.js";
@@ -22,7 +21,6 @@ function getPort() {
   return address.port;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
 test(`NODE_ENV`, ({ expect }) => {
   expect(process.env[`NODE_ENV`]).toMatchInlineSnapshot(`"test"`);
 });
@@ -33,8 +31,7 @@ function getBaseUrl() {
 
 describe(`/exec`, () => {
   describe(`good`, () => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    test(`good`, async ({ expect }) => {
+    test(`select`, async ({ expect }) => {
       const response = await fetch(`${getBaseUrl()}/exec`, {
         body: JSON.stringify({
           query: `select 1 as one`,
@@ -55,6 +52,33 @@ describe(`/exec`, () => {
             },
           ],
           "type": "returnedData",
+        }
+      `);
+      expect(response.headers.get(`content-type`)).toMatchInlineSnapshot(
+        `"application/json; charset=utf-8"`
+      );
+    });
+
+    test(`create`, async ({ expect }) => {
+      const response = await fetch(`${getBaseUrl()}/exec`, {
+        body: JSON.stringify({
+          query: `create table if not exists "~/yooo" (one int)`,
+        } satisfies RequestBody),
+        headers: {
+          "content-type": `application/json`,
+        },
+        method: `POST`,
+      });
+
+      const result = fd(ResponseBody, await response.json());
+
+      expect(result).toMatchInlineSnapshot(`
+        {
+          "result": {
+            "changes": 0,
+            "lastInsertRowid": 0,
+          },
+          "type": "noData",
         }
       `);
       expect(response.headers.get(`content-type`)).toMatchInlineSnapshot(

@@ -4,6 +4,18 @@
 module.exports = {
   extends: [`plugin:deprecation/recommended`, `@ryb73`],
 
+  overrides: [
+    {
+      files: [`*.test.ts`],
+      rules: {
+        "@typescript-eslint/no-shadow": [
+          `error`,
+          { allow: [`afterAll`, `assert`, `beforeAll`, `describe`, `test`] },
+        ],
+      },
+    },
+  ],
+
   rules: {
     "sonar/function-return-type": `off`,
     "sonar/new-cap": `off`,
