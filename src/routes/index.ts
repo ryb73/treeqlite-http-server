@@ -1,12 +1,81 @@
+/* eslint-disable import/no-unused-modules */
+import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
+import type {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+} from "express";
 import express from "express";
+import type { TypeOf } from "io-ts";
+import {
+  array,
+  bigint,
+  exact,
+  intersection,
+  literal,
+  number,
+  partial,
+  strict,
+  string,
+  union,
+  unknown,
+} from "io-ts";
+import type { TreeQLiteConfig } from "treeqlite-node/nodejs";
+import { QueryResult, tqlExec } from "treeqlite-node/nodejs";
+import { treeqliteRootPath } from "../config/treeqlite.js";
 
 const router = express.Router();
 
-/* GET home page. */
-router.get(`/`, (req, res) => {
-  res.contentType(`text/plain`);
-  res.send(`Hello World!`);
-  res.end();
+const config: TreeQLiteConfig = {
+  rootPath: treeqliteRootPath,
+};
+
+const SqliteParam = union([number, string]);
+
+const RequestBody = intersection([
+  strict({
+    query: string,
+  }),
+  exact(
+    partial({
+      params: array(SqliteParam),
+    })
+  ),
+]);
+type RequestBody = TypeOf<typeof RequestBody>;
+export { RequestBody };
+
+const AllResult = array(unknown);
+
+const QueryResult = strict({
+  changes: number,
+  lastInsertRowid: union([bigint, number]),
 });
+
+const ResponseBody = union([
+  strict({
+    type: literal(`noData`),
+    result: QueryResult,
+  }),
+  strict({
+    type: literal(`returnedData`),
+    data: AllResult,
+  }),
+]);
+type ResponseBody = TypeOf<typeof ResponseBody>;
+export { ResponseBody };
+
+router.post(
+  `/exec`,
+  (
+    req: ExpressRequest<unknown, ResponseBody, unknown>,
+    res: ExpressResponse<ResponseBody>
+  ) => {
+    const { query, params } = fd(RequestBody, req.body);
+
+    const result = tqlExec(config, query, params);
+
+    res.send(result).end();
+  }
+);
 
 export default router;
