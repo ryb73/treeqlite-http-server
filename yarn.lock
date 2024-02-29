@@ -8818,10 +8818,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pbsql@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "pbsql@npm:0.1.2"
-  checksum: 10c0/12767239f8993c86117dc10239b76334c7a16b8d8606035cce14c441aeafb2ee386a1f7af2dd08362cde1beb0ae39df84c33badce116c590710c71ed1f6a52ff
+"pbsql@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "pbsql@npm:0.2.0"
+  checksum: 10c0/d7c04eb7a083a5f8f33d872dcfabb037859a73b134947429ccc35013582118e5da10877b2ecc8a19377ebcdfeb3b853074c1ce12a35c98ce05fccd9b0b672de2
   languageName: node
   linkType: hard
 
@@ -10713,18 +10713,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"treeqlite-node@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "treeqlite-node@npm:0.1.1"
+"treeqlite-node@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "treeqlite-node@npm:0.2.0"
   dependencies:
     "@ryb73/super-duper-parakeet": "npm:^12.1.0"
     debug: "npm:^4.3.4"
     fp-ts: "npm:^2.16.2"
     lodash-es: "npm:^4.17.21"
-    pbsql: "npm:^0.1.2"
+    pbsql: "npm:^0.2.0"
   peerDependencies:
     better-sqlite3: ^9.4.2
-  checksum: 10c0/682dbea87da686f292a478dd523107aa6dbe86e1d865542622758dafbef9aeae0a4842e997b891f3e529b296453faf75c9f557d40b37f3fcb31899569f1200ae
+  checksum: 10c0/863fabc2fce65b586babc25f6e373f6740befde1f89a6d3510a5f99ca5890da2dfa74be3912e1568e58e17c46b828a7310b3742f08e55c9d767988351fdadef5
   languageName: node
   linkType: hard
 
@@ -10756,7 +10756,7 @@ __metadata:
     monocle-ts: "npm:^2.3.13"
     morgan: "npm:~1.9.1"
     newtype-ts: "npm:^0.3.5"
-    treeqlite-node: "npm:^0.1.1"
+    treeqlite-node: "npm:^0.2.0"
     typescript: "npm:~5.2.0"
     vitest: "npm:^1.3.1"
   languageName: unknown

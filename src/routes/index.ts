@@ -20,7 +20,7 @@ import {
 } from "io-ts";
 import prettyReporter from "io-ts-reporters";
 import type { TreeQLiteConfig } from "treeqlite-node/nodejs";
-import { QueryResult, tqlExec } from "treeqlite-node/nodejs";
+import { QueryResult, TreeQLiteError, tqlExec } from "treeqlite-node/nodejs";
 import { treeqliteRootPath } from "../config/treeqlite.js";
 
 const router = express.Router();
@@ -82,9 +82,23 @@ router.post(
 
     const { query, params } = decodedBody.right;
 
-    const result = tqlExec(config, query, params);
+    try {
+      const result = tqlExec(config, query, params);
+      res.send(result).end();
+    } catch (error) {
+      console.error(error);
 
-    res.send(result).end();
+      if (error instanceof TreeQLiteError) {
+        res
+          .status(500)
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          .send(`TreeQLiteError: ${error.message}` as any)
+          .end();
+        return;
+      }
+
+      res.status(500).end();
+    }
   }
 );
 

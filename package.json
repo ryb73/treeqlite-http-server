@@ -26,7 +26,7 @@
     "monocle-ts": "^2.3.13",
     "morgan": "~1.9.1",
     "newtype-ts": "^0.3.5",
-    "treeqlite-node": "^0.1.1"
+    "treeqlite-node": "^0.2.0"
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.11.0",
