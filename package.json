@@ -45,6 +45,7 @@
   },
   "packageManager": "yarn@4.1.0",
   "resolutions": {
+    "qs": "^6.5.3",
     "typescript": "~5.2.0"
   }
 }
