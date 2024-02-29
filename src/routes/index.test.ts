@@ -1,10 +1,10 @@
 import { createServer } from "http";
-import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode";
-import { defined } from "@ryb73/super-duper-parakeet/lib/src/type-checks";
+import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
+import { defined } from "@ryb73/super-duper-parakeet/lib/src/type-checks.js";
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import { afterAll, assert, beforeAll, describe, test } from "vitest";
-import app from "../app";
-import { type RequestBody, ResponseBody } from ".";
+import app from "../app.js";
+import { type RequestBody, ResponseBody } from "./index.js";
 
 const server = createServer(app);
 

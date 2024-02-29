@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "tsc",
+    "dev": "NODE_ENV=development node ./lib/src/index.js",
     "lint-strict": "yarn lint --max-warnings 0",
     "lint": "eslint . --ext ts,tsx,js",
     "start": "node ./lib/src/index.js",
