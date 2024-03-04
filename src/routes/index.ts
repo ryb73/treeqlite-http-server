@@ -3,7 +3,6 @@ import type {
   Response as ExpressResponse,
 } from "express";
 import express from "express";
-import { isLeft } from "fp-ts/lib/Either.js";
 import type { TypeOf } from "io-ts";
 import {
   array,
@@ -18,10 +17,10 @@ import {
   union,
   unknown,
 } from "io-ts";
-import prettyReporter from "io-ts-reporters";
 import type { TreeQLiteConfig } from "treeqlite-node/nodejs";
 import { QueryResult, TreeQLiteError, tqlExec } from "treeqlite-node/nodejs";
 import { treeqliteRootPath } from "../config/treeqlite.js";
+import { definePostRoute } from "../rbx/definePostRoute.js";
 
 const router = express.Router();
 
@@ -64,24 +63,11 @@ const ResponseBody = union([
 type ResponseBody = TypeOf<typeof ResponseBody>;
 export { ResponseBody };
 
-router.post(
+definePostRoute(
+  router,
   `/exec`,
-  (
-    req: ExpressRequest<unknown, ResponseBody, unknown>,
-    res: ExpressResponse<ResponseBody>
-  ) => {
-    const decodedBody = RequestBody.decode(req.body);
-    if (isLeft(decodedBody)) {
-      res.status(400).send().end();
-      console.error(
-        `Decode error:`,
-        prettyReporter.default.report(decodedBody)
-      );
-      return;
-    }
-
-    const { query, params } = decodedBody.right;
-
+  RequestBody,
+  (req, res: ExpressResponse<ResponseBody>, { query, params }) => {
     try {
       const result = tqlExec(config, query, params);
       res.send(result).end();
