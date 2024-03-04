@@ -29,17 +29,15 @@ function getBaseUrl() {
   return `http://localhost:${getPort()}`;
 }
 
+function getClientConfig(): TqlHttpClientConfig {
+  return { baseUrl: getBaseUrl() };
+}
+
 describe(`/exec`, () => {
   describe(`good`, () => {
     test(`select`, async ({ expect }) => {
-      const response = await fetch(`${getBaseUrl()}/exec`, {
-        body: JSON.stringify({
-          query: `select 1 as one`,
-        } satisfies RequestBody),
-        headers: {
-          "content-type": `application/json`,
-        },
-        method: `POST`,
+      const response = await tqlExec(getClientConfig(), {
+        query: `select 1 as one`,
       });
 
       const result = fd(ResponseBody, await response.json());
@@ -61,14 +59,8 @@ describe(`/exec`, () => {
 
     test(`create`, async ({ expect }) => {
       try {
-        const response = await fetch(`${getBaseUrl()}/exec`, {
-          body: JSON.stringify({
-            query: `create table if not exists "~/yooo" (one int)`,
-          } satisfies RequestBody),
-          headers: {
-            "content-type": `application/json`,
-          },
-          method: `POST`,
+        const response = await tqlExec(getClientConfig(), {
+          query: `create table if not exists "~/yooo" (one int)`,
         });
 
         const result = fd(ResponseBody, await response.json());
@@ -86,38 +78,20 @@ describe(`/exec`, () => {
           `"application/json; charset=utf-8"`
         );
       } finally {
-        await fetch(`${getBaseUrl()}/exec`, {
-          body: JSON.stringify({
-            query: `drop table "~/yooo"`,
-          } satisfies RequestBody),
-          headers: {
-            "content-type": `application/json`,
-          },
-          method: `POST`,
+        await tqlExec(getClientConfig(), {
+          query: `drop table "~/yooo"`,
         });
       }
     });
 
     test(`insert/select`, async ({ expect }) => {
       try {
-        await fetch(`${getBaseUrl()}/exec`, {
-          body: JSON.stringify({
-            query: `create table if not exists "~/yooo" (one int)`,
-          } satisfies RequestBody),
-          headers: {
-            "content-type": `application/json`,
-          },
-          method: `POST`,
+        await tqlExec(getClientConfig(), {
+          query: `create table if not exists "~/yooo" (one int)`,
         });
 
-        const insertResponse = await fetch(`${getBaseUrl()}/exec`, {
-          body: JSON.stringify({
-            query: `insert into "~/yooo" (one) values (2)`,
-          } satisfies RequestBody),
-          headers: {
-            "content-type": `application/json`,
-          },
-          method: `POST`,
+        const insertResponse = await tqlExec(getClientConfig(), {
+          query: `insert into "~/yooo" (one) values (2)`,
         });
 
         const insertResult = fd(ResponseBody, await insertResponse.json());
@@ -135,14 +109,8 @@ describe(`/exec`, () => {
           insertResponse.headers.get(`content-type`)
         ).toMatchInlineSnapshot(`"application/json; charset=utf-8"`);
 
-        const selectResponse = await fetch(`${getBaseUrl()}/exec`, {
-          body: JSON.stringify({
-            query: `select * from "~/yooo"`,
-          } satisfies RequestBody),
-          headers: {
-            "content-type": `application/json`,
-          },
-          method: `POST`,
+        const selectResponse = await tqlExec(getClientConfig(), {
+          query: `select * from "~/yooo"`,
         });
 
         expect(selectResponse.status).toBe(200);
@@ -160,14 +128,8 @@ describe(`/exec`, () => {
           }
         `);
       } finally {
-        await fetch(`${getBaseUrl()}/exec`, {
-          body: JSON.stringify({
-            query: `drop table "~/yooo"`,
-          } satisfies RequestBody),
-          headers: {
-            "content-type": `application/json`,
-          },
-          method: `POST`,
+        await tqlExec(getClientConfig(), {
+          query: `drop table "~/yooo"`,
         });
       }
     });
@@ -190,3 +152,20 @@ describe(`/exec`, () => {
     });
   });
 });
+
+type TqlHttpClientConfig = {
+  baseUrl: string;
+};
+
+async function tqlExec(
+  { baseUrl }: TqlHttpClientConfig,
+  requestBody: RequestBody
+) {
+  return await fetch(`${baseUrl}/exec`, {
+    body: JSON.stringify(requestBody),
+    headers: {
+      "content-type": `application/json`,
+    },
+    method: `POST`,
+  });
+}
