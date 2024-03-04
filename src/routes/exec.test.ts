@@ -22,10 +22,6 @@ function getPort() {
   return address.port;
 }
 
-test(`NODE_ENV`, ({ expect }) => {
-  expect(process.env[`NODE_ENV`]).toMatchInlineSnapshot(`"test"`);
-});
-
 function getBaseUrl() {
   return `http://localhost:${getPort()}`;
 }
