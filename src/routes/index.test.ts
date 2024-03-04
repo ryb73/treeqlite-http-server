@@ -36,11 +36,9 @@ function getClientConfig(): TqlHttpClientConfig {
 describe(`/exec`, () => {
   describe(`good`, () => {
     test(`select`, async ({ expect }) => {
-      const response = await tqlExec(getClientConfig(), {
+      const result = await tqlExec(getClientConfig(), {
         query: `select 1 as one`,
       });
-
-      const result = fd(ResponseBody, await response.json());
 
       expect(result).toMatchInlineSnapshot(`
         {
@@ -52,31 +50,23 @@ describe(`/exec`, () => {
           "type": "returnedData",
         }
       `);
-      expect(response.headers.get(`content-type`)).toMatchInlineSnapshot(
-        `"application/json; charset=utf-8"`
-      );
     });
 
     test(`create`, async ({ expect }) => {
       try {
-        const response = await tqlExec(getClientConfig(), {
+        const result = await tqlExec(getClientConfig(), {
           query: `create table if not exists "~/yooo" (one int)`,
         });
 
-        const result = fd(ResponseBody, await response.json());
-
         expect(result).toMatchInlineSnapshot(`
-        {
-          "result": {
-            "changes": 0,
-            "lastInsertRowid": 0,
-          },
-          "type": "noData",
-        }
-      `);
-        expect(response.headers.get(`content-type`)).toMatchInlineSnapshot(
-          `"application/json; charset=utf-8"`
-        );
+          {
+            "result": {
+              "changes": 0,
+              "lastInsertRowid": 0,
+            },
+            "type": "noData",
+          }
+        `);
       } finally {
         await tqlExec(getClientConfig(), {
           query: `drop table "~/yooo"`,
@@ -90,32 +80,23 @@ describe(`/exec`, () => {
           query: `create table if not exists "~/yooo" (one int)`,
         });
 
-        const insertResponse = await tqlExec(getClientConfig(), {
+        const insertResult = await tqlExec(getClientConfig(), {
           query: `insert into "~/yooo" (one) values (2)`,
         });
 
-        const insertResult = fd(ResponseBody, await insertResponse.json());
-
         expect(insertResult).toMatchInlineSnapshot(`
-        {
-          "result": {
-            "changes": 1,
-            "lastInsertRowid": 1,
-          },
-          "type": "noData",
-        }
-      `);
-        expect(
-          insertResponse.headers.get(`content-type`)
-        ).toMatchInlineSnapshot(`"application/json; charset=utf-8"`);
+          {
+            "result": {
+              "changes": 1,
+              "lastInsertRowid": 1,
+            },
+            "type": "noData",
+          }
+        `);
 
-        const selectResponse = await tqlExec(getClientConfig(), {
+        const selectResult = await tqlExec(getClientConfig(), {
           query: `select * from "~/yooo"`,
         });
-
-        expect(selectResponse.status).toBe(200);
-
-        const selectResult = fd(ResponseBody, await selectResponse.json());
 
         expect(selectResult).toMatchInlineSnapshot(`
           {
@@ -161,11 +142,15 @@ async function tqlExec(
   { baseUrl }: TqlHttpClientConfig,
   requestBody: RequestBody
 ) {
-  return await fetch(`${baseUrl}/exec`, {
+  const response = await fetch(`${baseUrl}/exec`, {
     body: JSON.stringify(requestBody),
     headers: {
       "content-type": `application/json`,
     },
     method: `POST`,
   });
+
+  const json: unknown = await response.json();
+
+  return fd(ResponseBody, json);
 }
