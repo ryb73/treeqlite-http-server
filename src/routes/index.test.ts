@@ -3,7 +3,7 @@ import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
 import { defined } from "@ryb73/super-duper-parakeet/lib/src/type-checks.js";
 import { afterAll, assert, beforeAll, describe, test } from "vitest";
 import app from "../app.js";
-import { type RequestBody, ResponseBody } from "./index.js";
+import { type RequestBody, ResponseBody } from "./exec.js";
 
 const server = createServer(app);
 
