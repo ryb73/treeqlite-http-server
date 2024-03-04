@@ -15,16 +15,16 @@
   "dependencies": {
     "@ryb73/super-duper-parakeet": "^12.1.0",
     "better-sqlite3": "^9.4.3",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
+    "cookie-parser": "^1.4.4",
+    "debug": "^2.6.9",
     "dotenv-flow": "^4.1.0",
-    "express": "~4.16.1",
+    "express": "^4.16.1",
     "fp-ts": "^2.16.2",
     "io-ts": "^2.2.21",
     "io-ts-reporters": "^2.0.1",
     "io-ts-types": "^0.5.19",
     "monocle-ts": "^2.3.13",
-    "morgan": "~1.9.1",
+    "morgan": "^1.9.1",
     "newtype-ts": "^0.3.5",
     "treeqlite-node": "^0.2.0"
   },
@@ -45,7 +45,6 @@
   },
   "packageManager": "yarn@4.1.0",
   "resolutions": {
-    "qs": "^6.5.3",
     "typescript": "~5.2.0"
   }
 }
