@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { createServer } from "http";
 import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
 import { defined } from "@ryb73/super-duper-parakeet/lib/src/type-checks.js";
@@ -118,18 +119,20 @@ describe(`/exec`, () => {
 
   describe(`bad`, () => {
     test(`malformed query`, async ({ expect }) => {
-      const response = await fetch(`${getBaseUrl()}/exec`, {
-        body: JSON.stringify({
-          query: `kjhlakjfhldakjfhiduf`,
-        } satisfies RequestBody),
-        headers: {
-          "content-type": `application/json`,
-        },
-        method: `POST`,
-      });
+      const requestBody = {
+        query: `kjhlakjfhldakjfhiduf`,
+      } satisfies RequestBody;
 
-      expect(response.status).toBe(500);
-      expect(await response.text()).toBe(``);
+      try {
+        await tqlExec(getClientConfig(), requestBody);
+      } catch (error) {
+        assert(error instanceof TreeQLiteHttpRequestError);
+        expect(error.response.status).toBe(500);
+        expect(await error.response.text()).toBe(``);
+        return;
+      }
+
+      expect.fail(`Expected an error`);
     });
   });
 });
@@ -137,6 +140,17 @@ describe(`/exec`, () => {
 type TqlHttpClientConfig = {
   baseUrl: string;
 };
+
+class TreeQLiteHttpRequestError extends Error {
+  public constructor(
+    public requestBody: RequestBody,
+    public response: Response
+  ) {
+    super(`TreeQLiteHttpRequestError`);
+    // eslint-disable-next-line @typescript-eslint/quotes, @shopify/prefer-class-properties
+    this.name = "TreeQLiteHttpRequestError";
+  }
+}
 
 async function tqlExec(
   { baseUrl }: TqlHttpClientConfig,
@@ -149,6 +163,10 @@ async function tqlExec(
     },
     method: `POST`,
   });
+
+  if (!response.ok) {
+    throw new TreeQLiteHttpRequestError(requestBody, response);
+  }
 
   const json: unknown = await response.json();
 

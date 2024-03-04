@@ -17,6 +17,7 @@ module.exports = {
   ],
 
   rules: {
+    "@typescript-eslint/parameter-properties": `off`,
     "sonar/function-return-type": `off`,
     "sonar/new-cap": `off`,
     "testing-library/no-debugging-utils": `off`,
