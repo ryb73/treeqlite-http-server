@@ -1,7 +1,4 @@
-import type {
-  Request as ExpressRequest,
-  Response as ExpressResponse,
-} from "express";
+import type { Response as ExpressResponse } from "express";
 import express from "express";
 import type { TypeOf } from "io-ts";
 import {
