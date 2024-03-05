@@ -1,8 +1,8 @@
 import type { Response as ExpressResponse } from "express";
 import express from "express";
 import type { TypeOf } from "io-ts";
-import { array, bigint, literal, number, strict, union, unknown } from "io-ts";
-import { QueryResult, TreeQLiteError, tqlExec } from "treeqlite-node/nodejs";
+import { array, unknown } from "io-ts";
+import { TreeQLiteError, tqlAll } from "treeqlite-node/nodejs";
 import { definePostRoute } from "../rbx/definePostRoute.js";
 import { tql } from "../tql.js";
 import { TqlRequest } from "../TqlRequest.js";
@@ -13,23 +13,7 @@ const RequestBody = TqlRequest;
 type RequestBody = TypeOf<typeof RequestBody>;
 export { RequestBody };
 
-const AllResult = array(unknown);
-
-const QueryResult = strict({
-  changes: number,
-  lastInsertRowid: union([bigint, number]),
-});
-
-const ResponseBody = union([
-  strict({
-    type: literal(`noData`),
-    result: QueryResult,
-  }),
-  strict({
-    type: literal(`returnedData`),
-    data: AllResult,
-  }),
-]);
+const ResponseBody = array(unknown);
 type ResponseBody = TypeOf<typeof ResponseBody>;
 export { ResponseBody };
 
@@ -39,7 +23,7 @@ definePostRoute(
   RequestBody,
   (req, res: ExpressResponse<ResponseBody>, { query, params }) => {
     try {
-      const result = tqlExec(tql, query, params);
+      const result = tqlAll(tql, query, params);
       res.send(result).end();
     } catch (error) {
       console.error(error);
@@ -58,4 +42,4 @@ definePostRoute(
   }
 );
 
-export { router as execRouter };
+export { router as allRouter };

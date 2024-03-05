@@ -1,5 +1,12 @@
 import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
-import { type RequestBody, ResponseBody } from "../routes/exec.js";
+import {
+  type RequestBody as AllRequestBody,
+  ResponseBody as AllResponseBody,
+} from "../routes/all.js";
+import {
+  type RequestBody as ExecRequestBody,
+  ResponseBody as ExecResponseBody,
+} from "../routes/exec.js";
 
 export type TqlHttpClientConfig = {
   baseUrl: string;
@@ -7,7 +14,7 @@ export type TqlHttpClientConfig = {
 
 export class TreeQLiteHttpRequestError extends Error {
   public constructor(
-    public requestBody: RequestBody,
+    public requestBody: ExecRequestBody,
     public response: Response
   ) {
     super(`TreeQLiteHttpRequestError`);
@@ -18,7 +25,7 @@ export class TreeQLiteHttpRequestError extends Error {
 
 export async function tqlExec(
   { baseUrl }: TqlHttpClientConfig,
-  requestBody: RequestBody
+  requestBody: ExecRequestBody
 ) {
   const response = await fetch(`${baseUrl}/exec`, {
     body: JSON.stringify(requestBody),
@@ -34,5 +41,26 @@ export async function tqlExec(
 
   const json: unknown = await response.json();
 
-  return fd(ResponseBody, json);
+  return fd(ExecResponseBody, json);
+}
+
+export async function tqlAll(
+  { baseUrl }: TqlHttpClientConfig,
+  requestBody: AllRequestBody
+) {
+  const response = await fetch(`${baseUrl}/all`, {
+    body: JSON.stringify(requestBody),
+    headers: {
+      "content-type": `application/json`,
+    },
+    method: `POST`,
+  });
+
+  if (!response.ok) {
+    throw new TreeQLiteHttpRequestError(requestBody, response);
+  }
+
+  const json: unknown = await response.json();
+
+  return fd(AllResponseBody, json);
 }
