@@ -7,6 +7,9 @@
   "files": [
     "lib/src"
   ],
+  "bin": {
+    "treeqlite-http-server": "./bin.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "NODE_ENV=development node ./lib/src/index.js",
