@@ -7,7 +7,6 @@
   "files": [
     "lib/src"
   ],
-  "private": true,
   "scripts": {
     "build": "tsc",
     "dev": "NODE_ENV=development node ./lib/src/index.js",
