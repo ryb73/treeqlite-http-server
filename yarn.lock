@@ -10716,13 +10716,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"treeqlite-http-types@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "treeqlite-http-types@npm:0.1.1"
+"treeqlite-http-client@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "treeqlite-http-client@npm:0.1.0"
+  dependencies:
+    "@ryb73/super-duper-parakeet": "npm:^12.1.0"
+    treeqlite-http-types: "npm:^0.2.0"
+  checksum: 10c0/f31ace807b3c1012c2c94f724315a937afa08aadbb50aae37da0cf4eb9516effca344d99e06750681064750c7531c920093125d74e119bfd26c257ab092c0f3d
+  languageName: node
+  linkType: hard
+
+"treeqlite-http-types@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "treeqlite-http-types@npm:0.2.0"
   dependencies:
     fp-ts: "npm:^2.16.2"
     io-ts: "npm:^2.2.21"
-  checksum: 10c0/3d9c5b193a7ac85737082ecbc284395ce5f688296cae6e241b67c1bfef2c2beca429945890dcb9ce0c2e705ccfde917b713a4b13c0c47c81f6fe242c48910ade
+  checksum: 10c0/b7b557d0b68d028b416ef29ff947d3218f19a0c2cd50edc082bc9374309421ab0f59ad3f7a2719add9b76d3761d6193abdc41a8c582d4e10fdc0333e76e606f5
   languageName: node
   linkType: hard
 
@@ -10769,7 +10779,8 @@ __metadata:
     monocle-ts: "npm:^2.3.13"
     morgan: "npm:^1.9.1"
     newtype-ts: "npm:^0.3.5"
-    treeqlite-http-types: "npm:^0.1.1"
+    treeqlite-http-client: "npm:^0.1.0"
+    treeqlite-http-types: "npm:^0.2.0"
     treeqlite-node: "npm:^0.2.0"
     typescript: "npm:~5.2.0"
     vitest: "npm:^1.3.1"

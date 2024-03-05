@@ -1,13 +1,13 @@
 import { createServer } from "http";
 import { defined } from "@ryb73/super-duper-parakeet/lib/src/type-checks.js";
-import { afterAll, assert, beforeAll, describe, test } from "vitest";
-import app from "../app.js";
-import type { TqlHttpClientConfig } from "../rbx/treeqlite-client.js";
+import type { TqlHttpClientConfig } from "treeqlite-http-client";
 import {
   TreeQLiteHttpRequestError,
   tqlAll,
   tqlExec,
-} from "../rbx/treeqlite-client.js";
+} from "treeqlite-http-client";
+import { afterAll, assert, beforeAll, describe, test } from "vitest";
+import app from "../app.js";
 
 const server = createServer(app);
 
