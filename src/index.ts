@@ -4,7 +4,7 @@ import http from "http";
 import debugModule from "debug";
 import app from "./app.js";
 
-const debug = debugModule(`treeqlite-server:server`);
+const debug = debugModule(`treeqlite-http-server:server`);
 
 /**
  * Get port from environment and store in Express.

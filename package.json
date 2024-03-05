@@ -1,5 +1,5 @@
 {
-  "name": "treeqlite-server",
+  "name": "treeqlite-http-server",
   "type": "module",
   "version": "0.1.0",
   "main": "lib/src/index.js",
