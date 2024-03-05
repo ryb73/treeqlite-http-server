@@ -8,7 +8,6 @@ import {
   tqlExec,
   tqlQuery,
 } from "../rbx/treeqlite-client.js";
-import type { RequestBody } from "./query.js";
 
 const server = createServer(app);
 
@@ -91,11 +90,11 @@ describe(`/query`, () => {
       try {
         await tqlQuery(getClientConfig(), {
           query: `create table if not exists "~/query/good/select" (one integer)`,
-        } satisfies RequestBody);
+        });
 
         const selectResult = await tqlQuery(getClientConfig(), {
           query: `select * from "~/query/good/select"`,
-        } satisfies RequestBody);
+        });
 
         expect(selectResult).toMatchInlineSnapshot(`
           {
@@ -113,12 +112,10 @@ describe(`/query`, () => {
 
   describe(`bad`, () => {
     test(`malformed query`, async ({ expect }) => {
-      const requestBody = {
-        query: `kjhlakjfhldakjfhiduf`,
-      } satisfies RequestBody;
-
       try {
-        await tqlQuery(getClientConfig(), requestBody);
+        await tqlQuery(getClientConfig(), {
+          query: `kjhlakjfhldakjfhiduf`,
+        });
       } catch (error) {
         assert(error instanceof TreeQLiteHttpRequestError);
         expect(error.response.status).toBe(500);

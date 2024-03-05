@@ -4,7 +4,6 @@ import { afterAll, assert, beforeAll, describe, test } from "vitest";
 import app from "../app.js";
 import type { TqlHttpClientConfig } from "../rbx/treeqlite-client.js";
 import { TreeQLiteHttpRequestError, tqlExec } from "../rbx/treeqlite-client.js";
-import type { RequestBody } from "./exec.js";
 
 const server = createServer(app);
 
@@ -115,12 +114,10 @@ describe(`/exec`, () => {
 
   describe(`bad`, () => {
     test(`malformed query`, async ({ expect }) => {
-      const requestBody = {
-        query: `kjhlakjfhldakjfhiduf`,
-      } satisfies RequestBody;
-
       try {
-        await tqlExec(getClientConfig(), requestBody);
+        await tqlExec(getClientConfig(), {
+          query: `kjhlakjfhldakjfhiduf`,
+        });
       } catch (error) {
         assert(error instanceof TreeQLiteHttpRequestError);
         expect(error.response.status).toBe(500);

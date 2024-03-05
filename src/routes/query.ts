@@ -1,26 +1,12 @@
 import type { Response as ExpressResponse } from "express";
 import express from "express";
-import type { TypeOf } from "io-ts";
-import { bigint, number, strict, union } from "io-ts";
-import { QueryResult, TreeQLiteError, tqlQuery } from "treeqlite-node/nodejs";
+import { RequestBody } from "treeqlite-http-types/query";
+import type { ResponseBody } from "treeqlite-http-types/query";
+import { TreeQLiteError, tqlQuery } from "treeqlite-node/nodejs";
 import { definePostRoute } from "../rbx/definePostRoute.js";
 import { tql } from "../tql.js";
-import { TqlRequest } from "../TqlRequest.js";
 
 const router = express.Router();
-
-const RequestBody = TqlRequest;
-type RequestBody = TypeOf<typeof RequestBody>;
-export { RequestBody };
-
-const QueryResult = strict({
-  changes: number,
-  lastInsertRowid: union([bigint, number]),
-});
-
-const ResponseBody = QueryResult;
-type ResponseBody = TypeOf<typeof ResponseBody>;
-export { ResponseBody };
 
 definePostRoute(
   router,

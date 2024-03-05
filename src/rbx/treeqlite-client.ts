@@ -2,15 +2,15 @@ import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
 import {
   type RequestBody as AllRequestBody,
   ResponseBody as AllResponseBody,
-} from "../routes/all.js";
+} from "treeqlite-http-types/all";
 import {
   type RequestBody as ExecRequestBody,
   ResponseBody as ExecResponseBody,
-} from "../routes/exec.js";
+} from "treeqlite-http-types/exec";
 import {
   type RequestBody as QueryRequestBody,
   ResponseBody as QueryResponseBody,
-} from "../routes/query.js";
+} from "treeqlite-http-types/query";
 
 export type TqlHttpClientConfig = {
   baseUrl: string;

@@ -1,21 +1,12 @@
 import type { Response as ExpressResponse } from "express";
 import express from "express";
-import type { TypeOf } from "io-ts";
-import { array, unknown } from "io-ts";
+import type { ResponseBody } from "treeqlite-http-types/all";
+import { RequestBody } from "treeqlite-http-types/all";
 import { TreeQLiteError, tqlAll } from "treeqlite-node/nodejs";
 import { definePostRoute } from "../rbx/definePostRoute.js";
 import { tql } from "../tql.js";
-import { TqlRequest } from "../TqlRequest.js";
 
 const router = express.Router();
-
-const RequestBody = TqlRequest;
-type RequestBody = TypeOf<typeof RequestBody>;
-export { RequestBody };
-
-const ResponseBody = array(unknown);
-type ResponseBody = TypeOf<typeof ResponseBody>;
-export { ResponseBody };
 
 definePostRoute(
   router,

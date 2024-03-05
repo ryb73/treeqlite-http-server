@@ -8,7 +8,6 @@ import {
   tqlAll,
   tqlExec,
 } from "../rbx/treeqlite-client.js";
-import type { RequestBody } from "./all.js";
 
 const server = createServer(app);
 
@@ -91,12 +90,10 @@ describe(`/all`, () => {
 
   describe(`bad`, () => {
     test(`malformed query`, async ({ expect }) => {
-      const requestBody = {
-        query: `kjhlakjfhldakjfhiduf`,
-      } satisfies RequestBody;
-
       try {
-        await tqlAll(getClientConfig(), requestBody);
+        await tqlAll(getClientConfig(), {
+          query: `kjhlakjfhldakjfhiduf`,
+        });
       } catch (error) {
         assert(error instanceof TreeQLiteHttpRequestError);
         expect(error.response.status).toBe(500);
@@ -109,12 +106,10 @@ describe(`/all`, () => {
 
     test(`non-select`, async ({ expect }) => {
       try {
-        const requestBody = {
-          query: `create table if not exists "~/all/bad/non-select" (one integer)`,
-        } satisfies RequestBody;
-
         try {
-          await tqlAll(getClientConfig(), requestBody);
+          await tqlAll(getClientConfig(), {
+            query: `create table if not exists "~/all/bad/non-select" (one integer)`,
+          });
         } catch (error) {
           assert(error instanceof TreeQLiteHttpRequestError);
           expect(error.response.status).toBe(500);
