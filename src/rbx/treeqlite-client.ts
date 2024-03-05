@@ -7,6 +7,10 @@ import {
   type RequestBody as ExecRequestBody,
   ResponseBody as ExecResponseBody,
 } from "../routes/exec.js";
+import {
+  type RequestBody as QueryRequestBody,
+  ResponseBody as QueryResponseBody,
+} from "../routes/query.js";
 
 export type TqlHttpClientConfig = {
   baseUrl: string;
@@ -63,4 +67,25 @@ export async function tqlAll(
   const json: unknown = await response.json();
 
   return fd(AllResponseBody, json);
+}
+
+export async function tqlQuery(
+  { baseUrl }: TqlHttpClientConfig,
+  requestBody: QueryRequestBody
+) {
+  const response = await fetch(`${baseUrl}/query`, {
+    body: JSON.stringify(requestBody),
+    headers: {
+      "content-type": `application/json`,
+    },
+    method: `POST`,
+  });
+
+  if (!response.ok) {
+    throw new TreeQLiteHttpRequestError(requestBody, response);
+  }
+
+  const json: unknown = await response.json();
+
+  return fd(QueryResponseBody, json);
 }

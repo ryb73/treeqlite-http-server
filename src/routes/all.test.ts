@@ -53,7 +53,7 @@ describe(`/all`, () => {
     test(`many`, async ({ expect }) => {
       try {
         await tqlExec(getClientConfig(), {
-          query: `create table if not exists "~/all/good/many" (one int, two text)`,
+          query: `create table if not exists "~/all/good/many" (one integer, two text)`,
         });
 
         await tqlExec(getClientConfig(), {
@@ -110,7 +110,7 @@ describe(`/all`, () => {
     test(`non-select`, async ({ expect }) => {
       try {
         const requestBody = {
-          query: `create table if not exists "~/all/bad/non-select" (one int)`,
+          query: `create table if not exists "~/all/bad/non-select" (one integer)`,
         } satisfies RequestBody;
 
         try {

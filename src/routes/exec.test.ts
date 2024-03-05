@@ -52,7 +52,7 @@ describe(`/exec`, () => {
     test(`create`, async ({ expect }) => {
       try {
         const result = await tqlExec(getClientConfig(), {
-          query: `create table if not exists "~/yooo" (one int)`,
+          query: `create table if not exists "~/yooo" (one integer)`,
         });
 
         expect(result).toMatchInlineSnapshot(`
@@ -74,7 +74,7 @@ describe(`/exec`, () => {
     test(`insert/select`, async ({ expect }) => {
       try {
         await tqlExec(getClientConfig(), {
-          query: `create table if not exists "~/yooo" (one int)`,
+          query: `create table if not exists "~/yooo" (one integer)`,
         });
 
         const insertResult = await tqlExec(getClientConfig(), {
