@@ -22,7 +22,7 @@
     "cookie-parser": "^1.4.4",
     "debug": "^2.6.9",
     "dotenv-flow": "^4.1.0",
-    "express": "^4.16.1",
+    "express": "^4.19.2",
     "fp-ts": "^2.16.2",
     "io-ts": "^2.2.21",
     "io-ts-reporters": "^2.0.1",
