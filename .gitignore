@@ -18,3 +18,9 @@ lib/
 
 # Test DB
 test-db/
+
+# Local DB
+local-db/
+
+# Env
+.env.local
